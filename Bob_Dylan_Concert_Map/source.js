@@ -4,7 +4,8 @@ var defaultScale = w;
 var mapCenter = [w / 2, h / 2];
 
 var venueList = d3.map(), showList = d3.map(), flightList = d3.map(), dateList = [];
-var activeVenues = [];
+var activeDates = [];
+var lastFive = [];
 var tempActiveVenue = null;
 
 // Append the svg canvas and drawing groups
@@ -29,6 +30,10 @@ var mapPath = d3.geo.path()
 
 var arc = d3.geo.greatArc()
     .precision(1);
+
+var arcColor = d3.scale.linear()
+    .domain([1960, 2012])
+    .range(["white", "red"]);
 
 d3.json("world-countries.json", function(collection) {
     var geojson = collection.features;
@@ -66,7 +71,7 @@ function zoom() {
         .attr("cy", function(d) { return projection(d.value.coords)[1]; });
 
     flightGroup.selectAll("path")
-        .attr("d", function(d) { return mapPath(arc(d)); });
+        .attr("d", function(d) { return mapPath(arc(d.flight)); });
 }
 
 function drawVenues() {
@@ -79,45 +84,56 @@ function drawVenues() {
         .attr("cy", function(d) { return projection(d.value.coords)[1]; });
 }
 
-function highlightVenues() {
-    var activeLegs = [];
-    concertGroup.selectAll("circle")
-        .data(venueList.entries())
-        .attr("class", function(d) { 
-            if(activeVenues.indexOf(d.key) >= 0) {
-                activeLegs = activeLegs.concat(d.value.dates.map(function(e) {
-                    return dateList.indexOf(e);
-                }));
-                return "active";
-            } else {
-                return "inactive";
-            }
-        });
-    
-    var activeFlights = [];
-    for(var i=0; i<activeLegs.length; i++) {
-        var coming = flightList.get(dateList[activeLegs[i]-1]);
-        var going = flightList.get(dateList[activeLegs[i]]);
-        going.flightType = "departure";
-        if(coming == activeFlights[activeFlights.length-1]) {
-            coming.flightType = "inbetween";
-            activeFlights[activeFlights.length-1] = coming;
-            activeFlights.push(going);
-        } else {
-            coming.flightType = "arrival";
-            activeFlights.push(coming);
-            activeFlights.push(going);
-        }
+function highlightDates(activeDates) {
+    console.log(activeDates);
+    activeDates = d3.map(d3.nest().key(function(d) { return d; }).map(activeDates)).keys().map(function(d) { return new Date(d); });
+    console.log(activeDates);
+    activeLegs = activeDates.map(function(e) { for(var i; i<dateList.length; i++) { if(dateList[i]==e) { return i; } } return -1; });
+    console.log(activeLegs);
+    function addCircles() {
+        concertGroup.selectAll("circle")
+            .data(venueList.entries())
+            .attr("class", function(d) { 
+                if(d.value.dates.some(function(e) { return activeDates.indexOf(e) >= 0; })) {
+                    return "active";
+                } else {
+                    return "inactive";
+                }
+            });
     }
-    flightGroup.selectAll("path").remove();
-    var flightUpdate = flightGroup.selectAll("path")
-        .data(activeFlights);
+    
+    function addFlights() {
+        var activeFlights = [];
+        activeFlights.push({"date" : dateList[activeLegs[0]], "flight" : flightList.get(dateList[activeLegs[0]]), "flightType" : "departure"});
+        for(var i=1; i<activeLegs.length-1; i++) {
+            var coming = {"date" : dateList[activeLegs[i]-1], "flight" : flightList.get(dateList[activeLegs[i]-1])};
+            var going = {"date" : dateList[activeLegs[i]], "flight" : flightList.get(dateList[activeLegs[i]]), "flightType" : "departure"};
+            if(coming == activeFlights[activeFlights.length-1]) {
+                coming.flightType = "inbetween";
+                activeFlights[activeFlights.length-1] = coming;
+                activeFlights.push(going);
+            } else {
+                coming.flightType = "arrival";
+                activeFlights.push(coming);
+                activeFlights.push(going);
+            }
+        }
+        activeFlights.push({"date" : dateList[activeLegs[activeLegs.length-1]], "flight" : flightList.get(dateList[activeLegs[activeLegs.length-1]]), "flightType" : "arrival"});
+        console.log(activeFlights);
 
-    flightUpdate.enter().append("svg:path")
-        .attr("d", function(d) { return mapPath(arc(d)); });
-    flightGroup.selectAll("path")
-        .attr("class", function(d) { return d.flightType; });
-    flightGroup.selectAll("path").moveToFront();
+        flightGroup.selectAll("path").remove();
+        var flightUpdate = flightGroup.selectAll("path")
+            .data(activeFlights);
+
+        flightUpdate.enter().append("svg:path")
+            .attr("d", function(d) { return mapPath(arc(d.flight)); })
+            .attr("stroke", function(d) { return arcColor(d.date.getFullYear()); })
+            .attr("fill", "none");
+    }
+    addCircles();
+    addFlights();
+
+    arcs.parentNode.appendChild(arcs);
 }
 // Read in the concerts json and parse it into the data structures we need.
 d3.json("concerts.json", function(json) {
@@ -156,36 +172,52 @@ d3.json("concerts.json", function(json) {
 
     drawVenues();
 
+    worldTour(0);
+
     // Add persistent click highlighting behavior
     concertGroup.selectAll("circle")
         .on("click", function(d) {
             if(event.shiftKey) {
-                activeVenues.push(d.key);
-                activeVenues.push(d.key);
+                activeDates.push(d.value.dates);
+                activeDates.push(d.value.dates);
             } else {
-                if(activeVenues[0] == d.key && activeVenues[1] == d.key) { activeVenues = []; }
-                else { activeVenues = [d.key, d.key]; }
+                if(this.class == "active") { activeDates = []; }
+                else { activeDates = [d.value.dates, d.value.dates]; }
             }
-            highlightVenues();
+            highlightDates(d3.merge(activeDates.concat(lastFive)));
         });
 
     // Add mouseover temporary highlighting beharior
     concertGroup.selectAll("circle")
         .on("mouseover", function(d) {
-            activeVenues.push(d.key);
-            highlightVenues();
+            activeDates.push(d.value.dates);
+            highlightDates(d3.merge(activeDates.concat(lastFive)));
         })
         .on("mouseout", function(d) {
-            activeVenues.pop();
-            highlightVenues();
+            activeDates.pop();
+            highlightDates(d3.merge(activeDates.concat(lastFive)));
         });
 
     map.selectAll("path")
         .on("click", function() {
-            activeVenues = [];
-            highlightVenues();
+            activeDates = [];
+            highlightDates(d3.merge(activeDates.concat(lastFive)));
         });
+    
 });
+
+function worldTour(i) {
+    console.log(i);
+    if(i < dateList.length) {
+        lastFive.push(dateList[i]);
+        if(lastFive.length > 5) {
+            lastFive.shift();
+        }
+        highlightDates(activeDates.concat(lastFive));
+        setTimeout(function() { worldTour(i+1); }, 1500);
+    }
+    return;
+}
 
 vis.call(d3.behavior.zoom()
     .scaleExtent([1, 100])

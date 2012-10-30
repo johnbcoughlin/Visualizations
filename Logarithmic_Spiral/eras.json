@@ -1,0 +1,63 @@
+{ 
+    "eras" :
+        [
+            {"name" : "Hadean", "start" : 4567170000, "end" : 3800000000, "level" : "eon"},
+                {"name" : "Cryptic", "start" : 4567170000, "end" : 4150000000, "level" : "era"},
+                {"name" : "Basin Groups", "start" : 4150000000, "end" : 3920000000, "level" : "era"},
+                {"name" : "Nectarian", "start" : 3920000000, "end" : 3850000000, "level" : "era"},
+                {"name" : "Early Imbrian", "start" : 3850000000, "end" : 3800000000, "level" : "era"},
+            {"name" : "Archean", "start" : 3800000000, "end" : 2400000000, "level" : "eon"},
+                {"name" : "Eoarchean", "start" : 3800000000, "end" : 3600000000, "level" : "era"},
+                {"name" : "Paleoarchean", "start" : 3600000000, "end" : 3200000000, "level" : "era"},
+                {"name" : "Mesoarchean", "start" : 3200000000, "end" : 2800000000, "level" : "era"},
+                {"name" : "Neoarchean", "start" : 2800000000, "end" : 2500000000, "level" : "era"},
+            {"name" : "Proterozoic", "start" : 2500000000, "end" : 542000000, "level" : "eon"},
+                {"name" : "Paleoproterozoic", "start" : 2500000000, "end" : 1600000000, "level" : "era"},
+                    {"name" : "Siderian", "start" : 2500000000, "end" : 2300000000, "level" : "period"},
+                    {"name" : "Rhyacian", "start" : 2300000000, "end" : 2050000000, "level" : "period"},
+                    {"name" : "Orosirian", "start" : 2050000000, "end" : 1800000000, "level" : "period"},
+                    {"name" : "Statherian", "start" : 1800000000, "end" : 1600000000, "level" : "period"},
+                {"name" : "Mesoproterozoic", "start" : 1600000000, "end" : 1000000000, "level" : "era"},
+                    {"name" : "Calymmian", "start" : 1600000000, "end" : 1400000000, "level" : "period"},
+                    {"name" : "Ectasian", "start" : 1400000000, "end" : 1200000000, "level" : "period"},
+                    {"name" : "Stenian", "start" : 1200000000, "end" : 1000000000, "level" : "period"},
+                {"name" : "Neoproterozoic", "start" : 1000000000, "end" : 542000000, "level" : "era"},
+                    {"name" : "Tonian", "start" : 1000000000, "end" : 850000000, "level" : "period"},
+                    {"name" : "Cryogenian", "start" : 850000000, "end" : 630000000, "level" : "period"},
+                    {"name" : "Ediacaran", "start" : 630000000, "end" : 542000000, "level" : "period"},
+            {"name" : "Phanerozoic", "start" : 542000000, "end" : 1, "level" : "eon"}
+        ],
+
+    "events" :
+        [
+            {"name" : "Formation of the Earth", "date" : 4700000000, "type" : "historical", "importance" : 3, "link" : "http://en.wikipedia.org/wiki/History_of_the_Earth"},
+            {"name" : "Late Heavy Bombardment", "date" : 4300000000, "type" : "historical", "importance" : 2, "link" : "http://en.wikipedia.org/wiki/Late_Heavy_Bombardment"},
+            {"name" : "First Life", "date" : 4000000000, "type" : "historical", "importance" : 3, "link" : "http://en.wikipedia.org/wiki/Abiogenesis"},
+            {"name" : "Photosynthesis", "date" : 3500000000, "type" : "historical", "importance" : 2, "link" : "http://en.wikipedia.org/wiki/Photosynthesis"},
+            {"name" : "Great Oxygenation Event", "date" : 2280000000, "type" : "historical", "importance" : 2, "link" : "http://en.wikipedia.org/wiki/Great_Oxygenation_Event"},
+            {"name" : "Huronian Glaciation", "date" : 2200000000, "type" : "historical", "importance" : 2, "link" : "http://en.wikipedia.org/wiki/Great_Oxygenation_Event"},
+            {"name" : "Eukaryotes", "date" : 2000000000, "type" : "historical", "importance" : 3, "link" : "http://en.wikipedia.org/wiki/Eukaryote"},
+            {"name" : "Snowball Earth", "date" : 650000000, "type" : "historical", "importance" : 3, "link" : "http://en.wikipedia.org/wiki/Snowcall_Earth"},
+            {"name" : "Cambrian Explosion", "date" : 520000000, "type" : "historical", "importance" : 3, "link" : "http://en.wikipedia.org/wiki/Cambrian_Explosion"},
+            {"name" : "Andean-Saharan Glaciation", "date" : 460000000, "type" : "historical", "importance" : 3, "link" : "http://en.wikipedia.org/wiki/Andean-Saharan_glaciation"},
+            {"name" : "Karoo Ice Age", "date" : 360000000, "type" : "historical", "importance" : 3, "link" : "http://en.wikipedia.org/wiki/Karoo_Ice_Age"},
+            {"name" : "Pangaea", "date" : 300000000, "type" : "historical", "importance" : 1, "link" : "http://en.wikipedia.org/wiki/Pangaea"},
+            {"name" : "Breakup of Pangaea", "date" : 175000000, "type" : "historical", "importance" : 1, "link" : "http://en.wikipedia.org/wiki/Plate_Tectonics"},
+            {"name" : "Himalayan Orogeny", "date" : 50000000, "type" : "historical", "importance" : 1, "link" : "http://en.wikipedia.org/wiki/Geology_of_the_Himalaya"},
+            {"name" : "Quaternary Ice Age Begins", "date" : 2380000, "type" : "historical", "importance" : 3, "link" : "http://en.wikipedia.org/wiki/Quaternary_Glaciation"},
+            {"name" : "Lake Toba Catastrophe", "date" : 75000, "type" : "historical", "importance" : 2, "link" : "http://en.wikipedia.org/wiki/Toba_Catastrophe_Theory"},
+            {"name" : "Last Glacial Maximum", "date" : 24000, "type" : "historical", "importance" : 3, "link" : "http://en.wikipedia.org/wiki/Last_Glacial_Maximum"},
+            {"name" : "Development of Agriculture", "date" : 10500, "type" : "historical", "importance" : 3, "link" : "http://en.wikipedia.org/wiki/Neolithic_Revolution"},
+            {"name" : "Little Ice Age", "date" : 362, "type" : "historical", "importance" : 3, "link" : "http://en.wikipedia.org/wiki/Little_Ice_Age"},
+
+
+            {"name" : "Invention of Steam Engine", "date" : 237, "type" : "historical", "importance" : 3, "link" : "http://en.wikipedia.org/wiki/Steam_engine"},
+            {"name" : "Industrial Revolution in Europe", "date" : 192, "type" : "historical", "importance" : 3, "link" : "http://en.wikipedia.org/wiki/Industrial_revolution"},
+            {"name" : "First Oil Well", "date" : 153, "type" : "historical", "importance" : 1, "link" : "http://en.wikipedia.org/wiki/Edwin_Drake"},
+            {"name" : "Tunguska Event", "date" : 104, "type" : "historical", "importance" : 1, "link" : "http://en.wikipedia.org/wiki/Tunguska_event"},
+            {"name" : "Apollo 11", "date" : 43, "type" : "historical", "importance" : 2, "link" : "http://en.wikipedia.org/wiki/Apollo_11"},
+            {"name" : "Hurricane Katrina", "date" : 7, "type" : "historical", "importance" : 1, "link" : "http://en.wikipedia.org/wiki/Hurricane_Katrina"},
+            {"name" : "Deepwater Horizon", "date" : 2.5, "type" : "historical", "importance" : 1, "link" : "http://en.wikipedia.org/wiki/Deepwater_Horizon"}
+        ]
+}
+
