@@ -83,58 +83,6 @@ function drawVenues() {
         .attr("cx", function(d) { return projection(d.value.coords)[0]; })
         .attr("cy", function(d) { return projection(d.value.coords)[1]; });
 }
-
-function highlightDates(activeDates) {
-    console.log(activeDates);
-    activeDates = d3.map(d3.nest().key(function(d) { return d; }).map(activeDates)).keys().map(function(d) { return new Date(d); });
-    console.log(activeDates);
-    activeLegs = activeDates.map(function(e) { for(var i; i<dateList.length; i++) { if(dateList[i]==e) { return i; } } return -1; });
-    console.log(activeLegs);
-    function addCircles() {
-        concertGroup.selectAll("circle")
-            .data(venueList.entries())
-            .attr("class", function(d) { 
-                if(d.value.dates.some(function(e) { return activeDates.indexOf(e) >= 0; })) {
-                    return "active";
-                } else {
-                    return "inactive";
-                }
-            });
-    }
-    
-    function addFlights() {
-        var activeFlights = [];
-        activeFlights.push({"date" : dateList[activeLegs[0]], "flight" : flightList.get(dateList[activeLegs[0]]), "flightType" : "departure"});
-        for(var i=1; i<activeLegs.length-1; i++) {
-            var coming = {"date" : dateList[activeLegs[i]-1], "flight" : flightList.get(dateList[activeLegs[i]-1])};
-            var going = {"date" : dateList[activeLegs[i]], "flight" : flightList.get(dateList[activeLegs[i]]), "flightType" : "departure"};
-            if(coming == activeFlights[activeFlights.length-1]) {
-                coming.flightType = "inbetween";
-                activeFlights[activeFlights.length-1] = coming;
-                activeFlights.push(going);
-            } else {
-                coming.flightType = "arrival";
-                activeFlights.push(coming);
-                activeFlights.push(going);
-            }
-        }
-        activeFlights.push({"date" : dateList[activeLegs[activeLegs.length-1]], "flight" : flightList.get(dateList[activeLegs[activeLegs.length-1]]), "flightType" : "arrival"});
-        console.log(activeFlights);
-
-        flightGroup.selectAll("path").remove();
-        var flightUpdate = flightGroup.selectAll("path")
-            .data(activeFlights);
-
-        flightUpdate.enter().append("svg:path")
-            .attr("d", function(d) { return mapPath(arc(d.flight)); })
-            .attr("stroke", function(d) { return arcColor(d.date.getFullYear()); })
-            .attr("fill", "none");
-    }
-    addCircles();
-    addFlights();
-
-    arcs.parentNode.appendChild(arcs);
-}
 // Read in the concerts json and parse it into the data structures we need.
 d3.json("concerts.json", function(json) {
     // Iterate once to add the necessary fields
@@ -230,3 +178,6 @@ d3.selection.prototype.moveToFront = function() {
         this.parentNode.appendChild(this);
     });
 };
+
+el = document.elementFromPoint(500, 500);
+console.log(el);
